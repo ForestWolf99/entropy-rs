@@ -1,0 +1,10 @@
+___
+"tauri.js": patch
+"tauri": minor
+---
+
+Fixed too many characters being shown in live preview
+
+Fixed too many char values being used in extended ascii
+
+Removed unused development code
