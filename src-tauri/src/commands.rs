@@ -6,9 +6,6 @@ use std::time::SystemTime;
 use tauri::State;
 
 #[derive(Default)]
-pub struct Counter(Arc<Mutex<i32>>);
-
-#[derive(Default)]
 pub struct CharacterLists {
     printable: Arc<Mutex<Vec<char>>>,
     extended: Arc<Mutex<Vec<char>>>,
@@ -65,7 +62,7 @@ fn generate_extended(banned_character_lists: BannedCharacterLists) -> Vec<char> 
     let escape = banned_character_lists.escape.iter().cloned().collect::<Vec<char>>();
     let unused = banned_character_lists.unused.iter().cloned().collect::<Vec<char>>();
 
-    for i in 123..256 {
+    for i in 123..255 {
         let char = i as u8 as char;
         if !escape.contains(&char) && !unused.contains(&char) {
             extended.push(char);
@@ -107,18 +104,8 @@ fn generate_seed() -> u64 {
 }
 
 #[tauri::command]
-pub fn debug(character_lists: State<'_, CharacterLists>) -> String {
-    let mut charset = character_lists.printable.lock().unwrap().iter().cloned().collect::<Vec<char>>();
-    let charset2 = character_lists.extended.lock().unwrap().iter().cloned().collect::<Vec<char>>();
-
-    charset.extend(&charset2);
-    charset.iter().collect::<String>()
-}
-
-#[tauri::command]
 pub fn generate_output(use_extended: bool, use_time: bool, seed: &str, length: i32, character_lists: State<'_, CharacterLists>, ) -> String {
     let mut charset = character_lists.printable.lock().unwrap().iter().cloned().collect::<Vec<char>>();
-    log::info!("Generating output");
 
     if use_extended {
         charset.extend(character_lists.extended.lock().unwrap().iter().cloned());
@@ -140,16 +127,4 @@ pub fn generate_output(use_extended: bool, use_time: bool, seed: &str, length: i
 
     let output = result.iter().collect::<String>();
     output
-}
-
-#[tauri::command]
-pub fn hello_world() -> String {
-    "hello world".to_string()
-}
-
-#[tauri::command]
-pub fn add_count(num: i32, counter: State<'_, Counter>) -> String {
-    let mut val = counter.0.lock().unwrap();
-    *val += num;
-    val.to_string()
 }
