@@ -1,5 +1,5 @@
 use crate::commands::{
-    add_count, debug, generate_output, hello_world, setup, CharacterLists, Counter,
+    generate_output, setup, CharacterLists,
 };
 
 pub mod commands;
@@ -10,13 +10,9 @@ pub fn run() {
         .plugin(tauri_plugin_log::Builder::new().target(tauri_plugin_log::Target::new(
             tauri_plugin_log::TargetKind::Webview
         )).build())
-        .manage(Counter::default())
         .manage(CharacterLists::default())
         .invoke_handler(tauri::generate_handler![
-            hello_world,
-            add_count,
             generate_output,
-            debug,
             setup
         ])
         .setup(|_app| {
