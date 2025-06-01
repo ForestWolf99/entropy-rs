@@ -16,3 +16,4 @@ Change summary goes here
 
 ```
 "Release 1.0": major
+"Release 1.0.1": patch
