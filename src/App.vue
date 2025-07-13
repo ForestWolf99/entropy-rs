@@ -16,15 +16,16 @@ export default {
       seed: '',
       outputLength: 12,
       output: '',
-      debugText: ''
+      previewText: ''
     }
   },
   methods: {
     async generateOutput() {
       this.output = await invoke('generate_output', { useExtended: this.useExtended, useTime: this.useTime, seed: this.seed, length: this.outputLength })
-    },
-    async getDebug() {
-      this.debugText = await invoke('debug')
+      this.previewText = '';
+      for (let i = 0; i < Math.min(this.output.length, 100); i++) {
+        this.previewText += this.output[i];
+      }
     },
     handleSeedInput(event) {
       if (event.target.value.length < 19) {
@@ -93,7 +94,7 @@ export default {
     </div>
     <div class="form-group">
       <label for="outText">Live Preview (first 100 character):</label>
-      <textarea class="form-control" readonly maxlength="100">{{output}}</textarea>
+      <textarea class="form-control" readonly maxlength="100">{{previewText}}</textarea>
     </div>
     <div id="breh">
       <button class="btn btn-warning" @click.prevent="generateOutput()">Generate</button>
