@@ -51,12 +51,17 @@ jobs:
         with:
           version: 9
 
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         # NOTE: enterprise developers may hard code a version
         with:
           node-version: 'lts/*'
-          cache: pnpm
+          cache: yarn
           # node-version-file: '.nvmrc'
 
       - name: Install Rust stable
@@ -78,7 +83,7 @@ jobs:
 
       - name: Install frontend dependencies
         run: |
-          pnpm install
+          yarn install
 
       - name: CI Build
         if: ${{ github.ref_type == 'branch' }}
