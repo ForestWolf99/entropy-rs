@@ -3,12 +3,11 @@ on:
   push:
     tags:
       - 'v*'
-    branches: 
-      - release
+    branches: '*'
   workflow_dispatch:
 
 env:
-  APP_NAME: "entropy"
+  APP_NAME: "Entropy-RS"
 
 jobs:
   changelog:
